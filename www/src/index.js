@@ -3,7 +3,7 @@ import {p, e} from './data.json';
 export default {
   async fetch(request, env, ctx) {
     const contentType = request.headers.get('content-type');
-    if (contentType.includes('application/json')) {
+    if (contentType && contentType.includes('application/json')) {
       return JSON.stringify(await request.json());
     }
     const url = 'https://api.openai.com/v1/completions';
@@ -55,15 +55,14 @@ export default {
 
 
 <script>
-  const response = await fetch("https://hank.kaycebasques.workers.dev/", {
+  fetch("https://hank.kaycebasques.workers.dev/", {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, *cors, same-origin
-    credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({"message": "Hello, world!"}), // body data type must match "Content-Type" header
-  });
+  }).then(response => response.json()).then(json => console.log(json));
 </script>
 
 	  </body>
