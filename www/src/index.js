@@ -2,6 +2,10 @@ import {p, e} from './data.json';
 
 export default {
   async fetch(request, env, ctx) {
+    const contentType = request.headers.get('content-type');
+    if (contentType.includes('application/json')) {
+      return JSON.stringify(await request.json());
+    }
     const url = 'https://api.openai.com/v1/completions';
     const model = 'curie:ft-personal:hank-v5-2023-05-07-03-53-02';
     const stopSequence = '( ͡° ͜ʖ ͡°)';
@@ -48,6 +52,20 @@ export default {
 	    <p>${expected}</p>
 	    <h2>Debug</h2>
 	    <pre><code>${JSON.stringify(json, null, 2)}</code></pre>
+
+
+<script>
+  const response = await fetch("https://hank.kaycebasques.workers.dev/", {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({"message": "Hello, world!"}), // body data type must match "Content-Type" header
+  });
+</script>
+
 	  </body>
 	</html>`;
     return new Response(html, responseOptions);
